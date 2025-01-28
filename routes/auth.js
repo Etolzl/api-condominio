@@ -3,6 +3,7 @@ const User = require('../models/user');
 const Backup = require('../models/backup'); // Importar el modelo de respaldo
 const crypto = require('crypto');
 
+
 const router = express.Router();
 
 // Registro de usuario
