@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const verifyToken = require('./middleware/verifyToken'); // Middleware de autenticación
+
 const app = express();
 const PORT = process.env.PORT || 4001;
 
@@ -9,6 +11,7 @@ const registro = require('./routes/registro');
 const login = require('./routes/login');
 const multas = require('./routes/multas');
 const departamentos = require('./routes/departamentos');
+const users = require('./routes/users');
 
 console.log("Mongo URI:", process.env.MONGODB_URI);
 
@@ -19,12 +22,14 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use(cors());
 app.use(express.json());
 
-app.use('/registro', registro);
+//Rutas públicas (no requieren autenticación)
 app.use('/api/login', login);
-app.use('/api/multas', multas);
-app.use('/api/departamentos', departamentos);
+app.use('/registro', registro);
 
-
+//Rutas protegidas (requieren token)
+app.use('/api/multas', verifyToken, multas);
+app.use('/api/departamentos', verifyToken, departamentos);
+app.use('/api/users', verifyToken, users);
 
 // Iniciar servidor
 app.listen(PORT, () => console.log(`Servidor escuchando en puerto ${PORT}`));
