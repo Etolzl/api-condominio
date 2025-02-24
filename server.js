@@ -12,6 +12,9 @@ const login = require('./routes/login');
 const multas = require('./routes/multas');
 const departamentos = require('./routes/departamentos');
 const users = require('./routes/users');
+const logoutRoute = require('./routes/logout'); // Asegúrate de importar la ruta correctamente
+const verifyTokenRoute = require('./routes/verifyTokenRoute'); // Importar la nueva ruta
+const changePasswordRoute = require('./routes/changePassword');
 
 console.log("Mongo URI:", process.env.MONGODB_URI);
 
@@ -22,11 +25,14 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use(cors());
 app.use(express.json());
 
-//Rutas públicas (no requieren autenticación)
+// Rutas públicas (no requieren autenticación)
 app.use('/api/login', login);
 app.use('/registro', registro);
+app.use('/api/logout', logoutRoute); // <- Asegúrate de que esté incluida
+app.use('/api/verify-token', verifyTokenRoute); // Usar la nueva ruta
+app.use('/api/cambiar-contra', changePasswordRoute);
 
-//Rutas protegidas (requieren token)
+// Rutas protegidas (requieren token)
 app.use('/api/multas', verifyToken, multas);
 app.use('/api/departamentos', verifyToken, departamentos);
 app.use('/api/users', verifyToken, users);
