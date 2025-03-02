@@ -25,6 +25,10 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use(cors());
 app.use(express.json());
 
+const recoverPasswordRoute = require('./routes/recoverPassword');
+app.use('/api', recoverPasswordRoute);
+
+
 // Rutas públicas (no requieren autenticación)
 app.use('/api/login', login);
 app.use('/registro', registro);

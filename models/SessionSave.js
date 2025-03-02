@@ -9,7 +9,20 @@ const sessionSaveSchema = new mongoose.Schema({
 });
 
 // Expiración dinámica según el tipo
-sessionSaveSchema.index({ createdAt: 1 }, { expireAfterSeconds: 0, partialFilterExpression: { tipo: 'temporal' }, expireAfterSeconds: 86400 }); // 1 dia para 'temporal'
-sessionSaveSchema.index({ createdAt: 1 }, { expireAfterSeconds: 0, partialFilterExpression: { tipo: 'persistente' }, expireAfterSeconds: 604800 }); // 7 días para 'persistente'
+sessionSaveSchema.index(
+    { createdAt: 1 },
+    {
+        expireAfterSeconds: 600, // 10 minutos para 'temporal'
+        partialFilterExpression: { tipo: 'temporal' }
+    }
+);
+
+sessionSaveSchema.index(
+    { createdAt: 1 },
+    {
+        expireAfterSeconds: 604800, // 7 días para 'persistente'
+        partialFilterExpression: { tipo: 'persistente' }
+    }
+);
 
 module.exports = mongoose.model('SessionSave', sessionSaveSchema);

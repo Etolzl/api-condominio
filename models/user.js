@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   perfil: { type: String, required: true },
   torre: { type: String, required: true },
   departamento: { type: String, required: true },
-  _iddepa: { type: String, required: true }, // Agregado el campo _iddepa
+  _iddepa: { type: String, required: true },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
