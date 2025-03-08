@@ -2,6 +2,7 @@ const express = require('express');
 const Multa = require('../models/Multa');
 const Notificacion = require('../models/Notificacion');
 const authMiddleware = require('../middleware/verifyToken'); // Importar el middleware
+const verifyRol = require('../middleware/verifyRol');
 const router = express.Router();
 
 // Obtener multas del usuario autenticado
@@ -27,10 +28,9 @@ router.get('/', authMiddleware, async (req, res) => {
     }
 });
 
-
-
 // Crear una multa (requiere autenticación)
-router.post('/', authMiddleware, async (req, res) => {
+// Crear una multa (solo para administradores)
+router.post('/', authMiddleware, verifyRol(['Administrador']), async (req, res) => {
     const { departamento, motivo, monto, fecha, estadoDelPago, comentarios } = req.body;
 
     try {
